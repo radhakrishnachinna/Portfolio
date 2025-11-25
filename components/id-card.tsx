@@ -47,7 +47,7 @@ export function IDCard() {
                 <div className="text-center space-y-4">
                   <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-green-400">
                     <Image
-                      src="/boy.png"
+                      src="/boys.gif"
                       alt="Radhakrishna"
                       width={128}
                       height={128}
