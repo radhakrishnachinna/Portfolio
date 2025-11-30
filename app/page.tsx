@@ -215,7 +215,7 @@ const commands = {
             Technologies: Python, Flask
           </div>
           <div className="ml-2">
-            Link: <a href="https://masomo-net.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300 cursor-pointer">https://masomo-net.vercel.app/</a>
+            Link: <a href="https://github.com/radhakrishnachinna/Non-Ischemic-Heart-Disease-Classification-in-Younger-Adults.git" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300 cursor-pointer">https://github.com/link</a>
           </div>
         </div>
         <div>
