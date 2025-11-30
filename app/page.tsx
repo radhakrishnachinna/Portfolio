@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { AnimatedOutput } from "@/components/animated-output"
-import { SoundToggle } from "@/components/sound-toggle"
+
 import { IDCard } from "@/components/id-card"
 import { useTypingSounds } from "@/hooks/use-typing-sounds"
 
@@ -150,6 +150,9 @@ const commands = {
         </div>
         <div>
           <span className="text-blue-400">flip</span> - Flip the ID card
+        </div>
+        <div>
+          <span className="text-blue-400">feedback</span> - Send me feedback
         </div>
       </div>
     </div>
@@ -421,6 +424,9 @@ export default function TerminalPortfolio() {
   const [soundMode, setSoundMode] = useState<"normal" | "smooth">("smooth")
   const [currentTime, setCurrentTime] = useState("")
 
+  const [feedbackStep, setFeedbackStep] = useState<"idle" | "name" | "message">("idle")
+  const [feedbackData, setFeedbackData] = useState({ name: "", message: "" })
+
   const { playCommandSound } = useTypingSounds()
 
   // Focus input after typing animation completes
@@ -451,6 +457,20 @@ export default function TerminalPortfolio() {
         <div className="text-green-400">
           <div>🔄 ID Card flipped!</div>
           <div className="text-gray-400 text-sm mt-1">Check out the other side of the card</div>
+        </div>
+      )
+      const newCommand = { command: cmd, output }
+      setHistory((prev) => [...prev, newCommand])
+      setIsExecutingCommand(true)
+      return
+    }
+
+    if (trimmedCmd === "feedback") {
+      setFeedbackStep("name")
+      const output = (
+        <div className="text-green-400">
+          <div>📧 Feedback System Initiated</div>
+          <div className="text-yellow-400 mt-1">Please enter your name:</div>
         </div>
       )
       const newCommand = { command: cmd, output }
@@ -517,13 +537,93 @@ export default function TerminalPortfolio() {
     setTypingIndex(history.length)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (input.trim() && !isExecutingCommand) {
-      setIsExecutingCommand(true)
-      handleCommand(input)
+
+    if (!input.trim() && feedbackStep === "idle") return
+
+    if (isExecutingCommand) return
+
+    setIsExecutingCommand(true)
+
+    // Handle Feedback Flow
+    if (feedbackStep === "name") {
+      const name = input
+      setFeedbackData(prev => ({ ...prev, name }))
+      setFeedbackStep("message")
+
+      const newCommand = {
+        command: name,
+        output: (
+          <div className="text-green-400">
+            <div>Hello {name}!</div>
+            <div className="text-yellow-400 mt-1">Please enter your feedback message:</div>
+          </div>
+        )
+      }
+      setHistory(prev => [...prev, newCommand])
       setInput("")
+      return
     }
+
+    if (feedbackStep === "message") {
+      const message = input
+      const finalData = { ...feedbackData, message }
+      setFeedbackStep("idle")
+      setFeedbackData({ name: "", message: "" })
+
+      const newCommand = {
+        command: message,
+        output: (
+          <div className="text-green-400">
+            <div>Sending feedback...</div>
+          </div>
+        )
+      }
+      setHistory(prev => [...prev, newCommand])
+      setInput("")
+
+      try {
+        const response = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(finalData)
+        })
+
+        if (response.ok) {
+          const successCommand = {
+            command: "",
+            output: (
+              <div className="text-green-400">
+                <div>✅ Feedback sent successfully!</div>
+                <div className="text-gray-400 text-sm">Thank you for your thoughts.</div>
+              </div>
+            )
+          }
+          setHistory(prev => [...prev, successCommand])
+        } else {
+          throw new Error('Failed to send')
+        }
+      } catch (error) {
+        const errorCommand = {
+          command: "",
+          output: (
+            <div className="text-red-400">
+              <div>❌ Failed to send feedback.</div>
+              <div className="text-sm">Please try again later or email directly.</div>
+            </div>
+          )
+        }
+        setHistory(prev => [...prev, errorCommand])
+      }
+
+      setIsExecutingCommand(false)
+      return
+    }
+
+    // Normal Command Flow
+    handleCommand(input)
+    setInput("")
   }
 
   useEffect(() => {
@@ -559,7 +659,7 @@ export default function TerminalPortfolio() {
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             <span className="ml-4 text-sm truncate max-w-[200px] md:max-w-none">Radhakrishna - Software Engineer</span>
           </div>
-          <SoundToggle />
+
         </div>
       </div>
 
