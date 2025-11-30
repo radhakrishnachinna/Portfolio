@@ -160,7 +160,7 @@ const commands = {
       <div className="ml-4 space-y-2">
         <div>Enthusiastic learner with a passion for technology and a strong background in programming languages and technologies.</div>
         <div>Passionate about creating innovative solutions and learning new technologies</div>
-        
+
         <div>Strong background in modern technologies and frameworks</div>
       </div>
     </div>
@@ -168,7 +168,7 @@ const commands = {
   resume: () => (
     <div className="text-green-400">
       <div className="text-yellow-400 mb-2">📝 Resume</div>
-  
+
       <div className="ml-2">
         <a
           href="https://drive.google.com/file/d/1O6DbFCLSpnQYM3t8mRsfmPMZWEhrQgux/view?usp=sharing"
@@ -179,7 +179,7 @@ const commands = {
           view resume
         </a>
       </div>
-  
+
       <div className="ml-2 mt-2">
         <a
           href="https://drive.google.com/uc?export=download&id=1O6DbFCLSpnQYM3t8mRsfmPMZWEhrQgux"
@@ -192,7 +192,7 @@ const commands = {
       </div>
     </div>
   ),
-  
+
   projects: () => (
     <div className="text-green-400">
       <div className="text-yellow-400 mb-2">🚀 Projects:</div>
@@ -235,7 +235,7 @@ const commands = {
             Link: <a href="https://parking-slot-allocation-a41a1.web.app" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline hover:text-blue-300 cursor-pointer">https://parking-slot-allocation-a41a1.web.app</a>
           </div>
         </div>
-       
+
       </div>
     </div>
   ),
@@ -243,7 +243,7 @@ const commands = {
     <div className="text-green-400">
       <div className="text-yellow-400 mb-2">💻 Technical Skills:</div>
       <div className="ml-4 space-y-3">
-        
+
         <div>
           <div className="text-white font-bold">Programming Languages:</div>
           <div className="ml-2"> Java,Python,R</div>
@@ -342,7 +342,7 @@ const commands = {
         <div>• Programming Fundamentals - Coursera</div>
         <div>• AWS - Forage</div>
         <div>• Power BI - SkillUp</div>
-        
+
       </div>
     </div>
   ),
@@ -549,29 +549,29 @@ export default function TerminalPortfolio() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-green-400 font-mono">
+    <div className="flex flex-col min-h-screen md:h-screen md:overflow-hidden bg-black text-green-400 font-mono">
       {/* Header */}
-      <div className="bg-gray-900 text-green-400 p-2 border-b border-green-400">
+      <div className="bg-gray-900 text-green-400 p-2 border-b border-green-400 shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span className="ml-4 text-sm">Radhakrishna - Software Engineer</span>
+            <span className="ml-4 text-sm truncate max-w-[200px] md:max-w-none">Radhakrishna - Software Engineer</span>
           </div>
           <SoundToggle />
         </div>
       </div>
 
-      <div className="flex h-[calc(100vh-40px)]">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0">
         {/* Left Panel - ID Card */}
-        <div className="w-80 bg-gray-900 p-6 flex flex-col items-center justify-center">
+        <div className="w-full md:w-80 bg-gray-900 p-6 flex flex-col items-center justify-center shrink-0 border-b md:border-b-0 md:border-r border-gray-700">
           <IDCard />
         </div>
 
         {/* Right Panel - Terminal */}
-        <div className="flex-1 flex flex-col border-l border-gray-700">
-          <div ref={terminalRef} className="flex-1 p-4 overflow-y-auto space-y-2">
+        <div className="flex-1 flex flex-col min-h-0 md:overflow-hidden">
+          <div ref={terminalRef} className="flex-1 p-4 md:overflow-y-auto space-y-2">
             {history.map((item, index) => (
               <div key={index}>
                 <div className="flex items-center gap-2">
@@ -597,7 +597,7 @@ export default function TerminalPortfolio() {
           </div>
 
           {/* Input */}
-          <div className="border-t border-green-400 p-4">
+          <div className="sticky bottom-0 md:static bg-black border-t border-green-400 p-4 z-10 shrink-0">
             <form onSubmit={handleSubmit} className="flex items-center gap-2">
               <span className="text-blue-400">{currentPath}</span>
               <input
@@ -614,7 +614,7 @@ export default function TerminalPortfolio() {
           </div>
 
           {/* Footer */}
-          <div className="bg-gray-900 p-2 text-xs text-gray-500 text-right">{currentTime || "Loading..."}</div>
+          <div className="bg-gray-900 p-2 text-xs text-gray-500 text-right shrink-0">{currentTime || "Loading..."}</div>
         </div>
       </div>
 

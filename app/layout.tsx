@@ -17,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>{`
 html {
   font-family: ${GeistSans.style.fontFamily};
@@ -25,7 +26,10 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}</body>
+      <body className="bg-black text-foreground">
+        {children}
+      </body>
     </html>
   )
 }
+
