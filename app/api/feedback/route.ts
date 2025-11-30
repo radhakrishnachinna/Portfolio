@@ -1,10 +1,21 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is present to avoid build errors
+const resend = process.env.RESEND_API_KEY
+    ? new Resend(process.env.RESEND_API_KEY)
+    : null;
 
 export async function POST(req: Request) {
     try {
+        if (!resend) {
+            console.error('Resend API key is missing');
+            return NextResponse.json(
+                { error: 'Server configuration error: Missing API Key' },
+                { status: 500 }
+            );
+        }
+
         const { name, message } = await req.json();
 
         if (!name || !message) {
@@ -22,9 +33,10 @@ export async function POST(req: Request) {
         });
 
         return NextResponse.json(data);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Feedback API Error:', error);
         return NextResponse.json(
-            { error: 'Failed to send email' },
+            { error: error.message || 'Failed to send email' },
             { status: 500 }
         );
     }

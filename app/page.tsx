@@ -39,7 +39,7 @@ function TypeWriter({ content, speed = 30, onComplete }: TypeWriterProps) {
 
       return () => clearInterval(timer)
     } else {
-      // For JSX content, we'll convert it to text and type that
+
       const textContent = extractTextFromJSX(content)
       let index = 0
       const timer = setInterval(() => {
@@ -127,9 +127,7 @@ const commands = {
         <div>
           <span className="text-blue-400">certifications</span> - See my certifications
         </div>
-        <div>
-          <span className="text-blue-400">leadership</span> - Leadership experience
-        </div>
+
         <div>
           <span className="text-blue-400">sudo</span> - Execute with admin privileges
         </div>
@@ -349,24 +347,7 @@ const commands = {
       </div>
     </div>
   ),
-  leadership: () => (
-    <div className="text-green-400">
-      <div className="text-yellow-400 mb-2">👥 Leadership Experience:</div>
-      <div className="ml-4 space-y-3">
-        <div>
-          <div className="text-white font-bold">Tech Lead - Current Team (2023-Present)</div>
-          <div className="ml-2">• Leading a team of 5 developers</div>
-          <div className="ml-2">• Mentoring junior developers</div>
-          <div className="ml-2">• Architecture decisions and code reviews</div>
-        </div>
-        <div>
-          <div className="text-white font-bold">Open Source Contributor</div>
-          <div className="ml-2">• Active contributor to various open source projects</div>
-          <div className="ml-2">• Maintained several npm packages</div>
-        </div>
-      </div>
-    </div>
-  ),
+
   sudo: () => (
     <div className="text-red-400">
       <div>sudo: access granted</div>
@@ -399,7 +380,7 @@ const commands = {
         <span className="text-blue-400">projects</span> | <span className="text-blue-400">skills</span> |{" "}
         <span className="text-blue-400">experience</span> | <span className="text-blue-400">contact</span> |{" "}
         <span className="text-blue-400">education</span> | <span className="text-blue-400">certifications</span> |{" "}
-        <span className="text-blue-400">leadership</span> | <span className="text-blue-400">sudo</span> |{" "}
+        <span className="text-blue-400">sudo</span> | <span className="text-blue-400">feedback</span> |{" "}
         <span className="text-blue-400">welcome</span> | <span className="text-blue-400">clear</span>
       </div>
     </div>
