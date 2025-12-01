@@ -116,7 +116,7 @@ const commands = {
           <span className="text-blue-400">skills</span> - See my technical skills
         </div>
         <div>
-          <span className="text-blue-400">experience</span> - View work experience
+          <span className="text-blue-400">resume</span> - View and download my resume
         </div>
         <div>
           <span className="text-blue-400">contact</span> - Get my contact information
@@ -268,25 +268,25 @@ const commands = {
       </div>
     </div>
   ),
-  experience: () => (
-    <div className="text-green-400">
-      <div className="text-yellow-400 mb-2">💼 Work Experience:</div>
-      <div className="ml-4 space-y-4">
-        <div>
-          <div className="text-white font-bold">Senior Software Engineer - Tech Startup (2022-Present)</div>
-          <div className="ml-2">• Led development of multiple full-stack applications</div>
-          <div className="ml-2">• Implemented AI-powered features using OpenAI API</div>
-          <div className="ml-2">• Managed cloud infrastructure on AWS and Azure</div>
-        </div>
-        <div>
-          <div className="text-white font-bold">Full Stack Developer - Freelance (2020-2022)</div>
-          <div className="ml-2">• Developed custom web applications for various clients</div>
-          <div className="ml-2">• Specialized in React/Next.js and Node.js development</div>
-          <div className="ml-2">• Integrated payment systems and third-party APIs</div>
-        </div>
-      </div>
-    </div>
-  ),
+  //experience: () => (
+    //<div className="text-green-400">
+      //<div className="text-yellow-400 mb-2">💼 Work Experience:</div>
+      //<div className="ml-4 space-y-4">
+        //<div>
+          //<div className="text-white font-bold">Senior Software Engineer - Tech Startup (2022-Present)</div>
+          //<div className="ml-2">• Led development of multiple full-stack applications</div>
+          //<div className="ml-2">• Implemented AI-powered features using OpenAI API</div>
+          //<div className="ml-2">• Managed cloud infrastructure on AWS and Azure</div>
+        //</div>
+        //<div>
+          //<div className="text-white font-bold">Full Stack Developer - Freelance (2020-2022)</div>
+          //<div className="ml-2">• Developed custom web applications for various clients</div>
+          //<div className="ml-2">• Specialized in React/Next.js and Node.js development</div>
+          //<div className="ml-2">• Integrated payment systems and third-party APIs</div>
+        //</div>
+      //</div>
+    //</div>
+  // ),
   contact: () => (
     <div className="text-green-400">
       <div className="text-yellow-400 mb-2">📧 Contact Information:</div>
@@ -378,10 +378,10 @@ const commands = {
       <div className="mt-2">
         <span className="text-blue-400">help</span> | <span className="text-blue-400">about</span> |{" "}
         <span className="text-blue-400">projects</span> | <span className="text-blue-400">skills</span> |{" "}
-        <span className="text-blue-400">experience</span> | <span className="text-blue-400">contact</span> |{" "}
+        <span className="text-blue-400">resume</span> | <span className="text-blue-400">contact</span> |{" "}
         <span className="text-blue-400">education</span> | <span className="text-blue-400">certifications</span> |{" "}
         <span className="text-blue-400">sudo</span> | <span className="text-blue-400">feedback</span> |{" "}
-        <span className="text-blue-400">welcome</span> | <span className="text-blue-400">clear</span>
+        <span className="text-blue-400">clear</span> | <span className="text-blue-400"></span>
       </div>
     </div>
   ),
