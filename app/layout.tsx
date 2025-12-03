@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   generator: 'v0.dev',
 }
 
+import { SoundProvider } from "@/context/sound-context"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +29,9 @@ html {
         `}</style>
       </head>
       <body className="bg-black text-foreground">
-        {children}
+        <SoundProvider>
+          {children}
+        </SoundProvider>
       </body>
     </html>
   )

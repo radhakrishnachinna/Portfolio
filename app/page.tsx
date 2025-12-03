@@ -98,6 +98,21 @@ function extractTextFromJSX(jsx: React.ReactNode): string {
   return ""
 }
 
+const getWelcomeMessage = () => (
+  <div className="text-green-400">
+    <div>Welcome to  Maradana Radhakrishna's Portfolio Terminal</div>
+    <div>Type 'help' to see available commands</div>
+    <div className="mt-2">
+      <span className="text-blue-400">help</span> | <span className="text-blue-400">about</span> |{" "}
+      <span className="text-blue-400">projects</span> | <span className="text-blue-400">skills</span> |{" "}
+      <span className="text-blue-400">resume</span> | <span className="text-blue-400">contact</span> |{" "}
+      <span className="text-blue-400">education</span> | <span className="text-blue-400">certifications</span> |{" "}
+      <span className="text-blue-400">sudo</span> | <span className="text-blue-400">feedback</span> |{" "}
+      <span className="text-blue-400">clear</span> | <span className="text-blue-400"></span>
+    </div>
+  </div>
+)
+
 const commands = {
   help: () => (
     <div className="text-green-400">
@@ -133,9 +148,6 @@ const commands = {
         </div>
         <div>
           <span className="text-blue-400">clear</span> - Clear the terminal
-        </div>
-        <div>
-          <span className="text-blue-400">welcome</span> - Return to welcome screen
         </div>
         <div>
           <span className="text-blue-400">sound</span> - Toggle typing sound effects
@@ -269,23 +281,23 @@ const commands = {
     </div>
   ),
   //experience: () => (
-    //<div className="text-green-400">
-      //<div className="text-yellow-400 mb-2">💼 Work Experience:</div>
-      //<div className="ml-4 space-y-4">
-        //<div>
-          //<div className="text-white font-bold">Senior Software Engineer - Tech Startup (2022-Present)</div>
-          //<div className="ml-2">• Led development of multiple full-stack applications</div>
-          //<div className="ml-2">• Implemented AI-powered features using OpenAI API</div>
-          //<div className="ml-2">• Managed cloud infrastructure on AWS and Azure</div>
-        //</div>
-        //<div>
-          //<div className="text-white font-bold">Full Stack Developer - Freelance (2020-2022)</div>
-          //<div className="ml-2">• Developed custom web applications for various clients</div>
-          //<div className="ml-2">• Specialized in React/Next.js and Node.js development</div>
-          //<div className="ml-2">• Integrated payment systems and third-party APIs</div>
-        //</div>
-      //</div>
-    //</div>
+  //<div className="text-green-400">
+  //<div className="text-yellow-400 mb-2">💼 Work Experience:</div>
+  //<div className="ml-4 space-y-4">
+  //<div>
+  //<div className="text-white font-bold">Senior Software Engineer - Tech Startup (2022-Present)</div>
+  //<div className="ml-2">• Led development of multiple full-stack applications</div>
+  //<div className="ml-2">• Implemented AI-powered features using OpenAI API</div>
+  //<div className="ml-2">• Managed cloud infrastructure on AWS and Azure</div>
+  //</div>
+  //<div>
+  //<div className="text-white font-bold">Full Stack Developer - Freelance (2020-2022)</div>
+  //<div className="ml-2">• Developed custom web applications for various clients</div>
+  //<div className="ml-2">• Specialized in React/Next.js and Node.js development</div>
+  //<div className="ml-2">• Integrated payment systems and third-party APIs</div>
+  //</div>
+  //</div>
+  //</div>
   // ),
   contact: () => (
     <div className="text-green-400">
@@ -371,20 +383,6 @@ const commands = {
     </div>
   ),
   clear: () => null,
-  welcome: () => (
-    <div className="text-green-400">
-      <div>Welcome to  Maradana Radhakrishna's Portfolio Terminal</div>
-      <div>Type 'help' to see available commands</div>
-      <div className="mt-2">
-        <span className="text-blue-400">help</span> | <span className="text-blue-400">about</span> |{" "}
-        <span className="text-blue-400">projects</span> | <span className="text-blue-400">skills</span> |{" "}
-        <span className="text-blue-400">resume</span> | <span className="text-blue-400">contact</span> |{" "}
-        <span className="text-blue-400">education</span> | <span className="text-blue-400">certifications</span> |{" "}
-        <span className="text-blue-400">sudo</span> | <span className="text-blue-400">feedback</span> |{" "}
-        <span className="text-blue-400">clear</span> | <span className="text-blue-400"></span>
-      </div>
-    </div>
-  ),
 }
 
 export default function TerminalPortfolio() {
@@ -392,7 +390,7 @@ export default function TerminalPortfolio() {
   const [history, setHistory] = useState<Command[]>([
     {
       command: "welcome",
-      output: commands.welcome(),
+      output: getWelcomeMessage(),
     },
   ])
   const [currentPath] = useState("radhakrishna@portfolio:~$")
@@ -404,11 +402,14 @@ export default function TerminalPortfolio() {
   const [isExecutingCommand, setIsExecutingCommand] = useState(false)
   const [soundMode, setSoundMode] = useState<"normal" | "smooth">("smooth")
   const [currentTime, setCurrentTime] = useState("")
+  const [commandHistory, setCommandHistory] = useState<string[]>([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
+  const [suggestion, setSuggestion] = useState("")
 
   const [feedbackStep, setFeedbackStep] = useState<"idle" | "name" | "message">("idle")
   const [feedbackData, setFeedbackData] = useState({ name: "", message: "" })
 
-  const { playCommandSound } = useTypingSounds()
+  const { playCommandSound, toggleSounds } = useTypingSounds()
 
   // Focus input after typing animation completes
   const handleTypingComplete = () => {
@@ -427,6 +428,22 @@ export default function TerminalPortfolio() {
 
     // Play command sound
     playCommandSound()
+
+    if (trimmedCmd === "sound") {
+      const isEnabled = toggleSounds()
+      const output = (
+        <div className="text-green-400">
+          <div>{isEnabled ? "🔊 Sound Enabled" : "🔇 Sound Disabled"}</div>
+          <div className="text-gray-400 text-sm mt-1">
+            {isEnabled ? "Typing sounds are now active" : "Typing sounds are now muted"}
+          </div>
+        </div>
+      )
+      const newCommand = { command: cmd, output }
+      setHistory((prev) => [...prev, newCommand])
+      setIsExecutingCommand(true)
+      return
+    }
 
     if (trimmedCmd === "flip") {
       // Trigger card flip
@@ -492,21 +509,13 @@ export default function TerminalPortfolio() {
       setHistory([
         {
           command: "welcome",
-          output: commands.welcome(),
+          output: getWelcomeMessage(),
         },
       ])
       return
     }
 
-    if (trimmedCmd === "welcome") {
-      setHistory([
-        {
-          command: "welcome",
-          output: commands.welcome(),
-        },
-      ])
-      return
-    }
+
 
     const output = commands[trimmedCmd as keyof typeof commands]?.() || (
       <div className="text-red-400">Command not found: {cmd}. Type 'help' for available commands.</div>
@@ -603,9 +612,57 @@ export default function TerminalPortfolio() {
     }
 
     // Normal Command Flow
+    if (input.trim()) {
+      setCommandHistory((prev) => [...prev, input])
+      setHistoryIndex(-1)
+    }
     handleCommand(input)
     setInput("")
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault()
+      if (commandHistory.length > 0) {
+        const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
+        setHistoryIndex(newIndex)
+        setInput(commandHistory[newIndex])
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault()
+      if (historyIndex !== -1) {
+        const newIndex = Math.min(commandHistory.length - 1, historyIndex + 1)
+        if (historyIndex === commandHistory.length - 1) {
+          setHistoryIndex(-1)
+          setInput("")
+        } else {
+          setHistoryIndex(newIndex)
+          setInput(commandHistory[newIndex])
+        }
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault()
+      if (suggestion) {
+        setInput(suggestion)
+      }
+    }
+  }
+
+  // Update suggestion based on input
+  useEffect(() => {
+    const trimmedInput = input.trim().toLowerCase()
+    if (!trimmedInput) {
+      setSuggestion("")
+      return
+    }
+
+    const matchingCommand = Object.keys(commands).find((cmd) => cmd.startsWith(trimmedInput))
+    if (matchingCommand && matchingCommand !== trimmedInput) {
+      setSuggestion(matchingCommand)
+    } else {
+      setSuggestion("")
+    }
+  }, [input])
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -679,18 +736,31 @@ export default function TerminalPortfolio() {
 
           {/* Input */}
           <div className="sticky bottom-0 md:static bg-black border-t border-green-400 p-4 z-10 shrink-0">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
-              <span className="text-blue-400">{currentPath}</span>
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="flex-1 bg-transparent text-green-400 outline-none disabled:opacity-50"
-                placeholder={isExecutingCommand ? "Executing command..." : "Type a command..."}
-                autoComplete="off"
-                disabled={isExecutingCommand}
-              />
+            <form onSubmit={handleSubmit} className="flex items-center gap-2 w-full">
+              <span className="text-blue-400 shrink-0">{currentPath}</span>
+              <div className="relative flex-1">
+                {/* Ghost Text */}
+                <input
+                  type="text"
+                  value={suggestion}
+                  readOnly
+                  className="absolute inset-0 w-full bg-transparent text-gray-600 outline-none pointer-events-none"
+                  disabled
+                />
+                {/* Actual Input */}
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="relative w-full bg-transparent text-green-400 outline-none disabled:opacity-50 z-10"
+                  placeholder={isExecutingCommand ? "Executing command..." : "Type a command..."}
+                  autoComplete="off"
+                  disabled={isExecutingCommand}
+                />
+              </div>
+              <button type="submit" className="hidden" />
             </form>
           </div>
 
